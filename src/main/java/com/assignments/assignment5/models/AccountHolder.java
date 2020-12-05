@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 public class AccountHolder {
 
 	@NotBlank (message = "First Name is Mandatory")
-	@NotNull(message = "First Name has to be present")
+	//@NotNull(message = "First Name has to be present")
 	String firstName;
 	
 	String middleName;
@@ -15,20 +15,17 @@ public class AccountHolder {
 	@NotNull(message = "Last Name has to be present")
 	String lastName;
 	
-	@NotBlank (message = "SSN is Mandatory")
-	@NotNull(message = "SSN has to be present")
 	int ssn;
 
-	public AccountHolder(
-			@NotBlank(message = "First Name is Mandatory") @NotNull(message = "First Name has to be present") String firstName,
-			String middleName,
-			@NotBlank(message = "Last Name is Mandatory") @NotNull(message = "Last Name has to be present") String lastName,
-			@NotBlank(message = "SSN is Mandatory") @NotNull(message = "SSN has to be present") int ssn) {
-		this.firstName = firstName;
-		this.middleName = middleName;
-		this.lastName = lastName;
-		this.ssn = ssn;
+	public AccountHolder()
+	{
+		this.firstName = "";
+		this.middleName = "";
+		this.lastName = "";
+		this.ssn = 0;
 	}
+
+
 
 	public String getFirstName() {
 		return firstName;

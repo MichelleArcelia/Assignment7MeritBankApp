@@ -3,6 +3,13 @@ package com.assignments.assignment5.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.Valid;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import com.assignments.assignment5.models.*;
 
@@ -10,4 +17,18 @@ import com.assignments.assignment5.models.*;
 public class MeritBankController {
 
 	List<AccountHolder> accountHoldersList = new ArrayList<AccountHolder>();
+
+	@GetMapping(value = "/accountHolder")
+	@ResponseStatus(HttpStatus.OK)
+	public List<AccountHolder> getPosts(){
+		return accountHoldersList;
+	}
+	
+	@PostMapping(value = "/accountHolder")
+	@ResponseStatus(HttpStatus.CREATED)
+	public AccountHolder addAccountHolder(@RequestBody @Valid AccountHolder accountHolder) {
+		accountHoldersList.add(accountHolder);
+		return accountHolder;
+	}
+	
 }
