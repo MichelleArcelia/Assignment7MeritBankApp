@@ -1,32 +1,38 @@
 package com.assignments.assignment5.models;
 
+import java.util.*;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 public class AccountHolder {
 
-	@NotBlank (message = "First Name is Mandatory")
-	//@NotNull(message = "First Name has to be present")
+	List<CheckingAccount> checkingAccounts = new ArrayList<CheckingAccount>();
+	List<SavingsAccount> savingsAccounts = new ArrayList<SavingsAccount>();
+	List<CDAccount> cdAccounts = new ArrayList<CDAccount>();
+	
+	@NotNull(message = "First Name can not be null")
+	@NotBlank(message = "First Name can not be blank")
 	String firstName;
-	
-	String middleName;
-	
-	@NotBlank (message = "Last Name is Mandatory")
-	@NotNull(message = "Last Name has to be present")
-	String lastName;
-	
-	int ssn;
 
-	public AccountHolder()
-	{
+	String middleName;
+	@NotNull(message = "Last Name can not be null")
+	@NotBlank(message = "Last Name can not be blank")
+	String lastName;
+	@NotNull(message = "SSN can not be null")
+	@NotBlank(message = "SSN can not be blank")
+	String SSN;
+	int id;
+	static int nextId = 1;
+	
+	public AccountHolder() {
 		this.firstName = "";
 		this.middleName = "";
 		this.lastName = "";
-		this.ssn = 0;
+		this.SSN = "";
+		this.id = nextId ++;
 	}
-
-
-
+	
 	public String getFirstName() {
 		return firstName;
 	}
@@ -51,12 +57,46 @@ public class AccountHolder {
 		this.lastName = lastName;
 	}
 
-	public int getSsn() {
-		return ssn;
+	public String getSSN() {
+		return SSN;
 	}
 
-	public void setSsn(int ssn) {
-		this.ssn = ssn;
+	public void setSSN(String sSN) {
+		SSN = sSN;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 	
+	public CheckingAccount addCheckingAccount(CheckingAccount checkingAccount) {
+		checkingAccounts.add(checkingAccount);
+		return checkingAccount;
+	}
+	
+	public List<CheckingAccount> getCheckingAccounts() {
+		return checkingAccounts;		
+	}
+	
+	public List<SavingsAccount> addSavingsAccount(SavingsAccount savingsAccount){
+		savingsAccounts.add(savingsAccount);
+		return savingsAccounts;
+	}
+	
+	public List<SavingsAccount> getSavingsAccounts(){
+		return savingsAccounts;
+	}
+	
+	public List<CDAccount> addCDAccount(CDAccount cdAccount){
+		cdAccounts.add(cdAccount);
+		return cdAccounts;
+	}
+	
+	public List<CDAccount> getCDAccounts(){
+		return cdAccounts;
+	}
 }
