@@ -6,10 +6,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 public class AccountHolder {
-
-	List<CheckingAccount> checkingAccounts = new ArrayList<CheckingAccount>();
-	List<SavingsAccount> savingsAccounts = new ArrayList<SavingsAccount>();
-	List<CDAccount> cdAccounts = new ArrayList<CDAccount>();
+	int id;
+	static int nextId = 1;
 	
 	@NotNull(message = "First Name can not be null")
 	@NotBlank(message = "First Name can not be blank")
@@ -22,8 +20,11 @@ public class AccountHolder {
 	@NotNull(message = "SSN can not be null")
 	@NotBlank(message = "SSN can not be blank")
 	String SSN;
-	int id;
-	static int nextId = 1;
+	
+	List<CheckingAccount> checkingAccounts = new ArrayList<CheckingAccount>();
+	List<SavingsAccount> savingsAccounts = new ArrayList<SavingsAccount>();
+	List<CDAccount> cdAccounts = new ArrayList<CDAccount>();
+	
 	
 	public AccountHolder() {
 		this.firstName = "";
@@ -99,4 +100,19 @@ public class AccountHolder {
 	public List<CDAccount> getCDAccounts(){
 		return cdAccounts;
 	}
+	
+	public double getTotalBalance(double addedAmmount) {
+		double totalBalance = 0;
+		for (CheckingAccount ca : checkingAccounts) {
+			totalBalance = totalBalance + ca.getBalance();
+		}
+		for (SavingsAccount sa : savingsAccounts) {
+			totalBalance = totalBalance + sa.getBalance();
+		}
+		for (CDAccount cda : cdAccounts) {
+			totalBalance = totalBalance + cda.getBalance();
+		}
+		return totalBalance + addedAmmount;
+	}
+
 }

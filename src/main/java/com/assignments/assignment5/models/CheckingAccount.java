@@ -1,16 +1,18 @@
 package com.assignments.assignment5.models;
 
+import java.sql.Date;
+
 public class CheckingAccount {
 	long checkingAccountNumber;
 	double balance;
-	String dateOpened;
+	Date openedOn;
 	double interestRate = 0.0001;
 	int id;
 	static int nextCheckingAccountNumber = 1;
 	
 	public CheckingAccount() {
 		this.balance = 0;
-		this.dateOpened = "11111111";
+		this.openedOn = new Date(System.currentTimeMillis());
 		this.interestRate = .000001;
 		this.checkingAccountNumber = nextCheckingAccountNumber++;
 	}
@@ -32,12 +34,12 @@ public class CheckingAccount {
 		this.balance = balance;
 	}
 
-	public String getDate() {
-		return dateOpened;
+	public Date getOpenedOn() {
+		return openedOn;
 	}
 
-	public void setDate(String date) {
-		this.dateOpened = date;
+	public void setOpenedOn(Date openedOn) {
+		this.openedOn = openedOn;
 	}
 
 	public double getInterestRate() {
@@ -47,6 +49,5 @@ public class CheckingAccount {
 	public void setInterest(double interestRate) {
 		this.interestRate = interestRate;
 	}
-
 
 }
