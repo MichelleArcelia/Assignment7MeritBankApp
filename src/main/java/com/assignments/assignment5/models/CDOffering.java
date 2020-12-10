@@ -1,16 +1,21 @@
 package com.assignments.assignment5.models;
 
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
+
 public class CDOffering {
-	int term; 
+	@Min(value = 1, message = "Term must be atleast one")
+	int term;
+	
+	@DecimalMin(value = "0.0", inclusive = false, message = "interest rate must be greater than zero")
+	@DecimalMax(value = "1.0", inclusive = false, message = "interest rate must be less than one")
 	int interestRate; 
-	int balance; 
-	String dateOpened; 
+
 	
 	public CDOffering() {
 		this.term = 0; 
 		this.interestRate = 0;
-		this.balance = 0;
-		this.dateOpened = "";
 	}
 
 	public int getTerm() {
@@ -27,21 +32,5 @@ public class CDOffering {
 
 	public void setInterestRate(int interestRate) {
 		this.interestRate = interestRate;
-	}
-
-	public int getBalance() {
-		return balance;
-	}
-
-	public void setBalance(int balance) {
-		this.balance = balance;
-	}
-
-	public String getDateOpened() {
-		return dateOpened;
-	}
-
-	public void setDateOpened(String dateOpened) {
-		this.dateOpened = dateOpened;
 	}
 }

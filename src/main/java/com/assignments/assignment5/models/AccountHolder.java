@@ -2,6 +2,7 @@ package com.assignments.assignment5.models;
 
 import java.util.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -74,7 +75,7 @@ public class AccountHolder {
 		this.id = id;
 	}
 	
-	public CheckingAccount addCheckingAccount(CheckingAccount checkingAccount) {
+	public BankAccount addCheckingAccount(CheckingAccount checkingAccount) {
 		checkingAccounts.add(checkingAccount);
 		return checkingAccount;
 	}
@@ -83,36 +84,72 @@ public class AccountHolder {
 		return checkingAccounts;		
 	}
 	
-	public List<SavingsAccount> addSavingsAccount(SavingsAccount savingsAccount){
+	public BankAccount addSavingsAccount(SavingsAccount savingsAccount){
 		savingsAccounts.add(savingsAccount);
-		return savingsAccounts;
+		return savingsAccount;
 	}
 	
 	public List<SavingsAccount> getSavingsAccounts(){
 		return savingsAccounts;
 	}
 	
-	public List<CDAccount> addCDAccount(CDAccount cdAccount){
+	public BankAccount addCDAccount(CDAccount cdAccount){
 		cdAccounts.add(cdAccount);
-		return cdAccounts;
+		return cdAccount;
 	}
 	
 	public List<CDAccount> getCDAccounts(){
 		return cdAccounts;
 	}
 	
-	public double getTotalBalance(double addedAmmount) {
+	public int getNumberOfCheckingAccounts() {
+		return checkingAccounts.size();
+	}
+	
+	public double getCheckingBalance() {
 		double totalBalance = 0;
-		for (CheckingAccount ca : checkingAccounts) {
+		for (BankAccount ca : checkingAccounts) {
 			totalBalance = totalBalance + ca.getBalance();
 		}
-		for (SavingsAccount sa : savingsAccounts) {
+		return totalBalance;
+	}
+	
+	public int getNumberOfSavingsAccounts() {
+		return savingsAccounts.size();
+	}
+	
+	public double getSavingsBalance() {
+		double totalBalance = 0;
+		for (BankAccount sa : savingsAccounts) {
 			totalBalance = totalBalance + sa.getBalance();
 		}
-		for (CDAccount cda : cdAccounts) {
+		return totalBalance;
+	}
+	
+	public int getNumberOfCDAccounts() {
+		return cdAccounts.size();
+	}
+	
+	public double getCdbalance() {
+		double totalBalance = 0;
+		for (BankAccount cda : cdAccounts) {
 			totalBalance = totalBalance + cda.getBalance();
 		}
-		return totalBalance + addedAmmount;
+		return totalBalance;
+	}
+	
+	public double getCombinedBalance() {
+		double totalBalance = 0;
+		for (BankAccount ca : checkingAccounts) {
+			totalBalance = totalBalance + ca.getBalance();
+		}
+		for (BankAccount sa : savingsAccounts) {
+			totalBalance = totalBalance + sa.getBalance();
+		}
+		for (BankAccount cda : cdAccounts) {
+			totalBalance = totalBalance + cda.getBalance();
+		}
+		return totalBalance;
 	}
 
 }
