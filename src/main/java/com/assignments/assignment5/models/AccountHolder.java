@@ -2,13 +2,29 @@ package com.assignments.assignment5.models;
 
 import java.util.*;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+@Entity
+@Table(name = "AccountHolder")
 public class AccountHolder {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
 	int id;
-	static int nextId = 1;
+	//static int nextId = 1;
 	
 	@NotNull(message = "First Name can not be null")
 	@NotBlank(message = "First Name can not be blank")
@@ -21,6 +37,11 @@ public class AccountHolder {
 	@NotNull(message = "SSN can not be null")
 	@NotBlank(message = "SSN can not be blank")
 	String SSN;
+	int contactID;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "contactID", referencedColumnName = "id")
+	AccountHoldersContactDetails contactDetails;
 	
 	List<CheckingAccount> checkingAccounts = new ArrayList<CheckingAccount>();
 	List<SavingsAccount> savingsAccounts = new ArrayList<SavingsAccount>();
@@ -32,9 +53,25 @@ public class AccountHolder {
 		this.middleName = "";
 		this.lastName = "";
 		this.SSN = "";
-		this.id = nextId ++;
+		//this.id = nextId ++;
 	}
 	
+	public int getContactID() {
+		return contactID;
+	}
+
+	public void setContactID(int contactID) {
+		this.contactID = contactID;
+	}
+
+	public AccountHoldersContactDetails getContactDetails() {
+		return contactDetails;
+	}
+
+	public void setContactDetails(AccountHoldersContactDetails contactDetails) {
+		this.contactDetails = contactDetails;
+	}
+
 	public String getFirstName() {
 		return firstName;
 	}

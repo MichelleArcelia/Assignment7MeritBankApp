@@ -80,9 +80,7 @@ public class MeritBankController {
 	@PostMapping(value = "/AccountHolders/{id}/SavingsAccounts")
 	public BankAccount postSavingsAccount(@Valid @RequestBody SavingsAccount savingsAccount, @PathVariable int id) throws NegativeBalanceException, ExceedsCombinedBalanceLimitException, AccountNotFoundException {
 		AccountHolder ah = getAccountHolderById(id);
-//		if(savingsAccount.getBalance()< 0) {
-//			throw new NegativeBalanceException("Balance can not be less 0");
-//		}
+
 		if(ah.getCombinedBalance() + savingsAccount.getBalance() > 250000) {
 			throw new ExceedsCombinedBalanceLimitException("Balance exceeds limit");
 		}

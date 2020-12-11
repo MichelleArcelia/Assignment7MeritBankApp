@@ -2,9 +2,12 @@ package com.assignments.assignment5.models;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
-
+@Entity
+@Table(name = "SavingsAccount")
 public class SavingsAccount extends BankAccount{
 
 //	long savingsAccountNumber;

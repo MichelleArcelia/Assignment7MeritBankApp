@@ -2,6 +2,10 @@ package com.assignments.assignment5.models;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
@@ -10,15 +14,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-//@JsonIgnoreProperties(ignoreUnknown = true)
-//@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
-//@JsonSubTypes({
-//    @JsonSubTypes.Type(value = CheckingAccount.class, name = "CheckingAccount"),
-//    @JsonSubTypes.Type(value = SavingsAccount.class, name = "SavingsAccount"),
-//    @JsonSubTypes.Type(value = CDAccount.class, name = "CDAccount")}
-//)
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class BankAccount {
-
+	@Id
 	int id;
 	static int nextId = 1;
 	
