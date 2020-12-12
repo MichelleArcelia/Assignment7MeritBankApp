@@ -56,68 +56,68 @@ public class MeritBankController {
 		return accountHolders.get(id-1);
 	}
 	
-	@ResponseStatus(HttpStatus.OK)
-	@PostMapping(value = "/AccountHolders/{id}/CheckingAccounts")
-	public CheckingAccount postCheckingAccount(@Valid @RequestBody CheckingAccount checkingAccount, @PathVariable int id) throws NegativeBalanceException, ExceedsCombinedBalanceLimitException, AccountNotFoundException {
-		AccountHolder ah = getAccountHolderById(id);
-		if(ah.getCombinedBalance() + checkingAccount.getBalance() > 250000) {
-			throw new ExceedsCombinedBalanceLimitException("Balance exceeds limit");
-		}
-		ah.addCheckingAccount(checkingAccount);
-		return checkingAccount;
-	}
-	
-	@ResponseStatus(HttpStatus.OK)
-	@GetMapping(value = "/AccountHolders/{id}/CheckingAccounts")
-	public List<CheckingAccount> getCheckingAccountsById(@PathVariable int id) throws AccountNotFoundException {
-		if (id-1 > accountHolders.size() ) {
-			throw new AccountNotFoundException("Account id not found");
-		}
-		return accountHolders.get(id-1).getCheckingAccounts();
-	}
-	
-	@ResponseStatus(HttpStatus.CREATED)
-	@PostMapping(value = "/AccountHolders/{id}/SavingsAccounts")
-	public BankAccount postSavingsAccount(@Valid @RequestBody SavingsAccount savingsAccount, @PathVariable int id) throws NegativeBalanceException, ExceedsCombinedBalanceLimitException, AccountNotFoundException {
-		AccountHolder ah = getAccountHolderById(id);
-
-		if(ah.getCombinedBalance() + savingsAccount.getBalance() > 250000) {
-			throw new ExceedsCombinedBalanceLimitException("Balance exceeds limit");
-		}
-		ah.addSavingsAccount(savingsAccount);
-		return savingsAccount;
-	}
-	@ResponseStatus(HttpStatus.OK)
-	@GetMapping(value = "/AccountHolders/{id}/SavingsAccounts")
-	public List<SavingsAccount> getSavingsAccountsById(@PathVariable int id) throws AccountNotFoundException{
-		if (id-1 > accountHolders.size() ) {
-			throw new AccountNotFoundException("Account id not found");
-		}
-		return accountHolders.get(id-1).getSavingsAccounts();
-				
-	}
-	
-	@PostMapping(value = "/AccountHolders/{id}/CDAccounts")
-	public BankAccount postCDAccoutnt(@Valid @RequestBody CDAccount cdAccount, @PathVariable int id) throws NegativeBalanceException, ExceedsCombinedBalanceLimitException, InterestRateOutOfBoundsException, TermLessThanOneOrNullException {
-//		if(cdAccount.getBalance()<0){
-//			throw new NegativeBalanceException("Balance can not be less than 0");
+//	@ResponseStatus(HttpStatus.OK)
+//	@PostMapping(value = "/AccountHolders/{id}/CheckingAccounts")
+//	public CheckingAccount postCheckingAccount(@Valid @RequestBody CheckingAccount checkingAccount, @PathVariable int id) throws NegativeBalanceException, ExceedsCombinedBalanceLimitException, AccountNotFoundException {
+//		AccountHolder ah = getAccountHolderById(id);
+//		if(ah.getCombinedBalance() + checkingAccount.getBalance() > 250000) {
+//			throw new ExceedsCombinedBalanceLimitException("Balance exceeds limit");
 //		}
-//		if(cdAccount.getInterestRate() <= 0 || cdAccount.getInterestRate() >=1) {
-//			throw new InterestRateOutOfBoundsException("Interest rate must be greater than 0 and less than 1");
+//		ah.addCheckingAccount(checkingAccount);
+//		return checkingAccount;
+//	}
+//	
+//	@ResponseStatus(HttpStatus.OK)
+//	@GetMapping(value = "/AccountHolders/{id}/CheckingAccounts")
+//	public List<CheckingAccount> getCheckingAccountsById(@PathVariable int id) throws AccountNotFoundException {
+//		if (id-1 > accountHolders.size() ) {
+//			throw new AccountNotFoundException("Account id not found");
 //		}
-//		if(cdAccount.getTerm() < 1) {
-//			throw new TermLessThanOneOrNullException("Term must not be null or less than 1");
+//		return accountHolders.get(id-1).getCheckingAccounts();
+//	}
+//	
+//	@ResponseStatus(HttpStatus.CREATED)
+//	@PostMapping(value = "/AccountHolders/{id}/SavingsAccounts")
+//	public BankAccount postSavingsAccount(@Valid @RequestBody SavingsAccount savingsAccount, @PathVariable int id) throws NegativeBalanceException, ExceedsCombinedBalanceLimitException, AccountNotFoundException {
+//		AccountHolder ah = getAccountHolderById(id);
+//
+//		if(ah.getCombinedBalance() + savingsAccount.getBalance() > 250000) {
+//			throw new ExceedsCombinedBalanceLimitException("Balance exceeds limit");
 //		}
-		accountHolders.get(id-1).addCDAccount(cdAccount);
-		return cdAccount;
-	}
-	
-	@ResponseStatus(HttpStatus.CREATED)
-	@GetMapping(value = "/AccountHolders/{id}/CDAccounts")
-	public List<CDAccount> getCDAccountsbyId(@PathVariable int id){
-		return accountHolders.get(id-1).getCDAccounts();
-	}
-	
+//		ah.addSavingsAccount(savingsAccount);
+//		return savingsAccount;
+//	}
+//	@ResponseStatus(HttpStatus.OK)
+//	@GetMapping(value = "/AccountHolders/{id}/SavingsAccounts")
+//	public List<SavingsAccount> getSavingsAccountsById(@PathVariable int id) throws AccountNotFoundException{
+//		if (id-1 > accountHolders.size() ) {
+//			throw new AccountNotFoundException("Account id not found");
+//		}
+//		return accountHolders.get(id-1).getSavingsAccounts();
+//				
+//	}
+//	
+//	@PostMapping(value = "/AccountHolders/{id}/CDAccounts")
+//	public BankAccount postCDAccoutnt(@Valid @RequestBody CDAccount cdAccount, @PathVariable int id) throws NegativeBalanceException, ExceedsCombinedBalanceLimitException, InterestRateOutOfBoundsException, TermLessThanOneOrNullException {
+////		if(cdAccount.getBalance()<0){
+////			throw new NegativeBalanceException("Balance can not be less than 0");
+////		}
+////		if(cdAccount.getInterestRate() <= 0 || cdAccount.getInterestRate() >=1) {
+////			throw new InterestRateOutOfBoundsException("Interest rate must be greater than 0 and less than 1");
+////		}
+////		if(cdAccount.getTerm() < 1) {
+////			throw new TermLessThanOneOrNullException("Term must not be null or less than 1");
+////		}
+//		accountHolders.get(id-1).addCDAccount(cdAccount);
+//		return cdAccount;
+//	}
+//	
+//	@ResponseStatus(HttpStatus.CREATED)
+//	@GetMapping(value = "/AccountHolders/{id}/CDAccounts")
+//	public List<CDAccount> getCDAccountsbyId(@PathVariable int id){
+//		return accountHolders.get(id-1).getCDAccounts();
+//	}
+//	
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping(value = "/CDOfferings")
 	public CDOffering postCDOffering(@Valid @RequestBody CDOffering cdOffering) {

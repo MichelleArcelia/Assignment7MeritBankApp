@@ -23,170 +23,177 @@ public class AccountHolder {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-	int id;
+	Integer id;
 	//static int nextId = 1;
 	
-	@NotNull(message = "First Name can not be null")
-	@NotBlank(message = "First Name can not be blank")
+//	@NotNull(message = "First Name can not be null")
+//	@NotBlank(message = "First Name can not be blank")
+	@Column(name = "firstName")
 	String firstName;
 
 	String middleName;
-	@NotNull(message = "Last Name can not be null")
-	@NotBlank(message = "Last Name can not be blank")
+//	@NotNull(message = "Last Name can not be null")
+//	@NotBlank(message = "Last Name can not be blank")
 	String lastName;
-	@NotNull(message = "SSN can not be null")
-	@NotBlank(message = "SSN can not be blank")
+//	@NotNull(message = "SSN can not be null")
+//	@NotBlank(message = "SSN can not be blank")
 	String SSN;
-	int contactID;
+	//int contactID;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "contactID", referencedColumnName = "id")
-	AccountHoldersContactDetails contactDetails;
-	
-	List<CheckingAccount> checkingAccounts = new ArrayList<CheckingAccount>();
-	List<SavingsAccount> savingsAccounts = new ArrayList<SavingsAccount>();
-	List<CDAccount> cdAccounts = new ArrayList<CDAccount>();
-	
+//	@OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "contactID", referencedColumnName = "id")
+//	AccountHoldersContactDetails contactDetails;
+//	
+//	List<CheckingAccount> checkingAccounts = new ArrayList<CheckingAccount>();
+//	List<SavingsAccount> savingsAccounts = new ArrayList<SavingsAccount>();
+//	List<CDAccount> cdAccounts = new ArrayList<CDAccount>();
+//	
 	
 	public AccountHolder() {
-		this.firstName = "";
-		this.middleName = "";
-		this.lastName = "";
-		this.SSN = "";
+//		this.firstName = "";
+//		this.middleName = "";
+//		this.lastName = "";
+//		this.SSN = "";
 		//this.id = nextId ++;
 	}
 	
-	public int getContactID() {
-		return contactID;
-	}
+//	public int getContactID() {
+//		return contactID;
+//	}
+//
+//	public AccountHolder setContactID(int contactID) {
+//		this.contactID = contactID;
+//		return this;
+//	}
 
-	public void setContactID(int contactID) {
-		this.contactID = contactID;
-	}
-
-	public AccountHoldersContactDetails getContactDetails() {
-		return contactDetails;
-	}
-
-	public void setContactDetails(AccountHoldersContactDetails contactDetails) {
-		this.contactDetails = contactDetails;
-	}
+//	public AccountHoldersContactDetails getContactDetails() {
+//		return contactDetails;
+//	}
+//
+//	public void setContactDetails(AccountHoldersContactDetails contactDetails) {
+//		this.contactDetails = contactDetails;
+//	}
 
 	public String getFirstName() {
 		return firstName;
 	}
 
-	public void setFirstName(String firstName) {
+	public AccountHolder setFirstName(String firstName) {
 		this.firstName = firstName;
+		return this;
 	}
 
 	public String getMiddleName() {
 		return middleName;
 	}
 
-	public void setMiddleName(String middleName) {
+	public AccountHolder setMiddleName(String middleName) {
 		this.middleName = middleName;
+		return this;
 	}
 
 	public String getLastName() {
 		return lastName;
 	}
 
-	public void setLastName(String lastName) {
+	public AccountHolder setLastName(String lastName) {
 		this.lastName = lastName;
+		return this;
 	}
 
 	public String getSSN() {
 		return SSN;
 	}
 
-	public void setSSN(String sSN) {
+	public AccountHolder setSSN(String sSN) {
 		SSN = sSN;
+		return this;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public AccountHolder setId(int id) {
 		this.id = id;
+		return this;
 	}
 	
-	public BankAccount addCheckingAccount(CheckingAccount checkingAccount) {
-		checkingAccounts.add(checkingAccount);
-		return checkingAccount;
-	}
-	
-	public List<CheckingAccount> getCheckingAccounts() {
-		return checkingAccounts;		
-	}
-	
-	public BankAccount addSavingsAccount(SavingsAccount savingsAccount){
-		savingsAccounts.add(savingsAccount);
-		return savingsAccount;
-	}
-	
-	public List<SavingsAccount> getSavingsAccounts(){
-		return savingsAccounts;
-	}
-	
-	public BankAccount addCDAccount(CDAccount cdAccount){
-		cdAccounts.add(cdAccount);
-		return cdAccount;
-	}
-	
-	public List<CDAccount> getCDAccounts(){
-		return cdAccounts;
-	}
-	
-	public int getNumberOfCheckingAccounts() {
-		return checkingAccounts.size();
-	}
-	
-	public double getCheckingBalance() {
-		double totalBalance = 0;
-		for (BankAccount ca : checkingAccounts) {
-			totalBalance = totalBalance + ca.getBalance();
-		}
-		return totalBalance;
-	}
-	
-	public int getNumberOfSavingsAccounts() {
-		return savingsAccounts.size();
-	}
-	
-	public double getSavingsBalance() {
-		double totalBalance = 0;
-		for (BankAccount sa : savingsAccounts) {
-			totalBalance = totalBalance + sa.getBalance();
-		}
-		return totalBalance;
-	}
-	
-	public int getNumberOfCDAccounts() {
-		return cdAccounts.size();
-	}
-	
-	public double getCdbalance() {
-		double totalBalance = 0;
-		for (BankAccount cda : cdAccounts) {
-			totalBalance = totalBalance + cda.getBalance();
-		}
-		return totalBalance;
-	}
-	
-	public double getCombinedBalance() {
-		double totalBalance = 0;
-		for (BankAccount ca : checkingAccounts) {
-			totalBalance = totalBalance + ca.getBalance();
-		}
-		for (BankAccount sa : savingsAccounts) {
-			totalBalance = totalBalance + sa.getBalance();
-		}
-		for (BankAccount cda : cdAccounts) {
-			totalBalance = totalBalance + cda.getBalance();
-		}
-		return totalBalance;
-	}
+//	public BankAccount addCheckingAccount(CheckingAccount checkingAccount) {
+//		checkingAccounts.add(checkingAccount);
+//		return checkingAccount;
+//	}
+//	
+//	public List<CheckingAccount> getCheckingAccounts() {
+//		return checkingAccounts;		
+//	}
+//	
+//	public BankAccount addSavingsAccount(SavingsAccount savingsAccount){
+//		savingsAccounts.add(savingsAccount);
+//		return savingsAccount;
+//	}
+//	
+//	public List<SavingsAccount> getSavingsAccounts(){
+//		return savingsAccounts;
+//	}
+//	
+//	public BankAccount addCDAccount(CDAccount cdAccount){
+//		cdAccounts.add(cdAccount);
+//		return cdAccount;
+//	}
+//	
+//	public List<CDAccount> getCDAccounts(){
+//		return cdAccounts;
+//	}
+//	
+//	public int getNumberOfCheckingAccounts() {
+//		return checkingAccounts.size();
+//	}
+//	
+//	public double getCheckingBalance() {
+//		double totalBalance = 0;
+//		for (BankAccount ca : checkingAccounts) {
+//			totalBalance = totalBalance + ca.getBalance();
+//		}
+//		return totalBalance;
+//	}
+//	
+//	public int getNumberOfSavingsAccounts() {
+//		return savingsAccounts.size();
+//	}
+//	
+//	public double getSavingsBalance() {
+//		double totalBalance = 0;
+//		for (BankAccount sa : savingsAccounts) {
+//			totalBalance = totalBalance + sa.getBalance();
+//		}
+//		return totalBalance;
+//	}
+//	
+//	public int getNumberOfCDAccounts() {
+//		return cdAccounts.size();
+//	}
+//	
+//	public double getCdbalance() {
+//		double totalBalance = 0;
+//		for (BankAccount cda : cdAccounts) {
+//			totalBalance = totalBalance + cda.getBalance();
+//		}
+//		return totalBalance;
+//	}
+//	
+//	public double getCombinedBalance() {
+//		double totalBalance = 0;
+//		for (BankAccount ca : checkingAccounts) {
+//			totalBalance = totalBalance + ca.getBalance();
+//		}
+//		for (BankAccount sa : savingsAccounts) {
+//			totalBalance = totalBalance + sa.getBalance();
+//		}
+//		for (BankAccount cda : cdAccounts) {
+//			totalBalance = totalBalance + cda.getBalance();
+//		}
+//		return totalBalance;
+//	}
 
 }

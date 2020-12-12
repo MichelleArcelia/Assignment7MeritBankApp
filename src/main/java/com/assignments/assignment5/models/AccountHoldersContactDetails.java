@@ -1,12 +1,16 @@
 package com.assignments.assignment5.models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.springframework.data.jpa.repository.query.JpaCountQueryCreator;
 
 @Entity
 @Table(name = "AccountHoldersContactDetails")
@@ -15,41 +19,52 @@ public class AccountHoldersContactDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
-	int id;
+	Integer id;
 	String email;
-	long phoneNumber;
+	Integer phoneNumber;
 	
-	@OneToOne(mappedBy = "AccountHoldersContactDetails")
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "id", referencedColumnName = "id") 
 	AccountHolder accountHolder;
 	
 	public AccountHoldersContactDetails() {
-		this.email = "";
-		this.phoneNumber = 0;
+//		this.email = "";
+//		this.phoneNumber = 0;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public AccountHoldersContactDetails setId(Integer id) {
 		this.id = id;
+		return this;
 	}
 
 	public String getEmail() {
 		return email;
 	}
 
-	public void setEmail(String email) {
+	public AccountHoldersContactDetails setEmail(String email) {
 		this.email = email;
+		return this;
 	}
 
-	public long getPhoneNumber() {
+	public Integer getPhoneNumber() {
 		return phoneNumber;
 	}
 
-	public void setPhoneNumber(long phoneNumber) {
+	public AccountHoldersContactDetails setPhoneNumber(Integer phoneNumber) {
 		this.phoneNumber = phoneNumber;
+		return this;
 	}
-	
-	
+
+	public AccountHolder getAccountHolder() {
+		return accountHolder;
+	}
+
+	public AccountHoldersContactDetails setAccountHolder(AccountHolder accountHolder) {
+		this.accountHolder = accountHolder;
+		return this;
+	}
 }
