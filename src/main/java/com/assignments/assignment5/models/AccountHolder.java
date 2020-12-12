@@ -23,7 +23,7 @@ import javax.validation.constraints.NotNull;
 public class AccountHolder {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id")
+	@Column(name = "ah_id")
 	Integer id;
 	// static int nextId = 1;
 
@@ -90,7 +90,7 @@ public class AccountHolder {
 		return id;
 	}
 
-	public AccountHolder setId(int id) {
+	public AccountHolder setId(Integer id) {
 		this.id = id;
 		return this;
 	}

@@ -20,7 +20,7 @@ public class AccountHolderResource {
 	@Autowired
 	AccountHolderRepository accountHolderRepository;
 	
-    @GetMapping("/all")
+    @GetMapping("/AccountHolders")
     public List<AccountHolder> getAll() {
         return accountHolderRepository.findAll();
     }

@@ -2,7 +2,10 @@ package com.assignments.assignment5.models;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -18,7 +21,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class BankAccount {
 	@Id
-	Integer id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ba_id")
+    private Integer id;
 //	static int nextId = 1;
 	
 	@Min(value = 0, message = "Balance must be atleast zero")
@@ -36,12 +41,13 @@ public abstract class BankAccount {
 //		this.id = nextId++;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public BankAccount setId(Integer id) {
 		this.id = id;
+		return this;
 	}
 
 	public double getBalance() {
