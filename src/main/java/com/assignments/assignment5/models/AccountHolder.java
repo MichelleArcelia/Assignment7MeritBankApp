@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.Valid;
@@ -20,12 +21,12 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "AccountHolder")
 public class AccountHolder {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
 	Integer id;
-	//static int nextId = 1;
-	
+	// static int nextId = 1;
+
 //	@NotNull(message = "First Name can not be null")
 //	@NotBlank(message = "First Name can not be blank")
 	@Column(name = "firstName")
@@ -38,8 +39,8 @@ public class AccountHolder {
 //	@NotNull(message = "SSN can not be null")
 //	@NotBlank(message = "SSN can not be blank")
 	String SSN;
-	//int contactID;
-	
+	// int contactID;
+
 //	@OneToOne(cascade = CascadeType.ALL)
 //    @JoinColumn(name = "contactID", referencedColumnName = "id")
 //	AccountHoldersContactDetails contactDetails;
@@ -48,15 +49,18 @@ public class AccountHolder {
 //	List<SavingsAccount> savingsAccounts = new ArrayList<SavingsAccount>();
 //	List<CDAccount> cdAccounts = new ArrayList<CDAccount>();
 //	
-	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "ah_id", referencedColumnName = "ah_id")
+	private List<CheckingAccount> checkingAccounts;
+
 	public AccountHolder() {
 //		this.firstName = "";
 //		this.middleName = "";
 //		this.lastName = "";
 //		this.SSN = "";
-		//this.id = nextId ++;
+		// this.id = nextId ++;
 	}
-	
+
 //	public int getContactID() {
 //		return contactID;
 //	}
@@ -73,6 +77,23 @@ public class AccountHolder {
 //	public void setContactDetails(AccountHoldersContactDetails contactDetails) {
 //		this.contactDetails = contactDetails;
 //	}
+
+	public List<CheckingAccount> getCheckingAccounts() {
+		return checkingAccounts;
+	}
+
+	public void setCheckingAccounts(List<CheckingAccount> checkingAccounts) {
+		this.checkingAccounts = checkingAccounts;
+	}
+	
+	public Integer getId() {
+		return id;
+	}
+
+	public AccountHolder setId(int id) {
+		this.id = id;
+		return this;
+	}
 
 	public String getFirstName() {
 		return firstName;
@@ -110,15 +131,8 @@ public class AccountHolder {
 		return this;
 	}
 
-	public Integer getId() {
-		return id;
-	}
-
-	public AccountHolder setId(int id) {
-		this.id = id;
-		return this;
-	}
 	
+
 //	public BankAccount addCheckingAccount(CheckingAccount checkingAccount) {
 //		checkingAccounts.add(checkingAccount);
 //		return checkingAccount;

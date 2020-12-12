@@ -18,8 +18,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class BankAccount {
 	@Id
-	int id;
-	static int nextId = 1;
+	Integer id;
+//	static int nextId = 1;
 	
 	@Min(value = 0, message = "Balance must be atleast zero")
 	double balance;
@@ -33,7 +33,7 @@ public abstract class BankAccount {
 		this.balance = 0;
 		this.openedOn = new Date(System.currentTimeMillis());
 		this.interestRate = 0.1;
-		this.id = nextId++;
+//		this.id = nextId++;
 	}
 
 	public int getId() {
