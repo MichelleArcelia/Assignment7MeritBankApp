@@ -4,11 +4,13 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
@@ -31,14 +33,26 @@ public abstract class BankAccount {
 	double balance;
 	Date openedOn;
 	
-	@DecimalMin(value = "0.0", inclusive = false, message = "interest rate must be greater than zero")
-	@DecimalMax(value = "1", inclusive = false, message = "interest rate must be less than one")
-	double interestRate;
+//	@DecimalMin(value = "0.0", inclusive = true, message = "interest rate must be greater than zero")
+//	@DecimalMax(value = "1", inclusive = false, message = "interest rate must be less than one")
+//	double interestRate;
+	
+
+	@ManyToOne(fetch = FetchType.LAZY)
+    private AccountHolder accountHolder;
+	
+	public AccountHolder getAccountHolder() {
+		return accountHolder;
+	}
+
+	public void setAccountHolder(AccountHolder accountHolder) {
+		this.accountHolder = accountHolder;
+	}
 	
 	public BankAccount() {
-		this.balance = 0;
-		this.openedOn = new Date(System.currentTimeMillis());
-		this.interestRate = 0.1;
+//		this.balance = 0;
+//		this.openedOn = new Date(System.currentTimeMillis());
+//		this.interestRate = 0.1;
 //		this.id = nextId++;
 	}
 

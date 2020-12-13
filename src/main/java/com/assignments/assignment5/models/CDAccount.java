@@ -19,14 +19,14 @@ public class CDAccount extends BankAccount {
 	int term;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	private AccountHolder acountHolder;
+	private AccountHolder accountHolder;
 
-	public AccountHolder getAcountHolder() {
-		return acountHolder;
+	public AccountHolder getAccountHolder() {
+		return accountHolder;
 	}
 
-	public void setAcountHolder(AccountHolder acountHolder) {
-		this.acountHolder = acountHolder;
+	public void setAccountHolder(AccountHolder accountHolder) {
+		this.accountHolder = accountHolder;
 	}
 
 	public CDAccount() {

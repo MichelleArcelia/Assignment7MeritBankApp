@@ -41,7 +41,15 @@ public class AccountHolder {
 	String SSN;
 	// int contactID;
 
-//	@OneToOne(cascade = CascadeType.ALL)
+	public List<CDAccount> getcDAccounts() {
+		return cDAccounts;
+	}
+
+	public void setcDAccounts(List<CDAccount> cDAccounts) {
+		this.cDAccounts = cDAccounts;
+	}
+
+	// @OneToOne(cascade = CascadeType.ALL)
 //    @JoinColumn(name = "contactID", referencedColumnName = "id")
 //	AccountHoldersContactDetails contactDetails;
 //	
@@ -52,8 +60,10 @@ public class AccountHolder {
 	@OneToMany(mappedBy = "accountHolder", cascade = CascadeType.ALL, orphanRemoval = true)
 	// @JoinColumn(name = "ah_id", referencedColumnName = "ahid")
 	private List<CheckingAccount> checkingAccounts;
+	@OneToMany(mappedBy = "accountHolder", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<SavingsAccount> savingsAccounts;
-	private List<CDAccount> cdAccounts;
+	@OneToMany(mappedBy = "accountHolder", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<CDAccount> cDAccounts;
 
 	public AccountHolder() {
 //		this.firstName = "";
@@ -62,7 +72,6 @@ public class AccountHolder {
 //		this.SSN = "";
 		// this.id = nextId ++;
 	}
-
 
 	public List<CheckingAccount> getCheckingAccounts() {
 		return checkingAccounts;
@@ -78,14 +87,6 @@ public class AccountHolder {
 
 	public void setSavingsAccounts(List<SavingsAccount> savingsAccounts) {
 		this.savingsAccounts = savingsAccounts;
-	}
-
-	public List<CDAccount> getCdAccounts() {
-		return cdAccounts;
-	}
-
-	public void setCdAccounts(List<CDAccount> cdAccounts) {
-		this.cdAccounts = cdAccounts;
 	}
 
 	public Integer getId() {
@@ -133,81 +134,88 @@ public class AccountHolder {
 		return this;
 	}
 
-	public BankAccount addCheckingAccount(CheckingAccount checkingAccount) {
-		checkingAccounts.add(checkingAccount);
-		return checkingAccount;
-	}
-	
-//	public List<CheckingAccount> getCheckingAccounts() {
-//		return checkingAccounts;		
+//
+//	public BankAccount addCheckingAccount(CheckingAccount checkingAccount) {
+//		checkingAccounts.add(checkingAccount);
+//		return checkingAccount;
 //	}
-	
-	public BankAccount addSavingsAccount(SavingsAccount savingsAccount){
-		savingsAccounts.add(savingsAccount);
-		return savingsAccount;
-	}
-	
-//	public List<SavingsAccount> getSavingsAccounts(){
-//		return savingsAccounts;
+//	
+////	public List<CheckingAccount> getCheckingAccounts() {
+////		return checkingAccounts;		
+////	}
+//	
+//	public BankAccount addSavingsAccount(SavingsAccount savingsAccount){
+//		savingsAccounts.add(savingsAccount);
+//		return savingsAccount;
 //	}
-	
-	public BankAccount addCDAccount(CDAccount cdAccount){
-		cdAccounts.add(cdAccount);
-		return cdAccount;
-	}
-	
-	public List<CDAccount> getCDAccounts(){
-		return cdAccounts;
-	}
-	
+//	
+////	public List<SavingsAccount> getSavingsAccounts(){
+////		return savingsAccounts;
+////	}
+//	
+//	public BankAccount addCDAccount(CDAccount cdAccount){
+//		cDAccounts.add(cdAccount);
+//		return cdAccount;
+//	}
+//	
+//	public List<CDAccount> getCDAccounts(){
+//		return cDAccounts;
+//	}
+//	
 	public int getNumberOfCheckingAccounts() {
-		return checkingAccounts.size();
+		if (checkingAccounts != null) {
+			return checkingAccounts.size();
+		}
+		return 0;
 	}
-	
+
 	public double getCheckingBalance() {
 		double totalBalance = 0;
-		for (BankAccount ca : checkingAccounts) {
-			totalBalance = totalBalance + ca.getBalance();
+		if (checkingAccounts != null) {
+			for (BankAccount ca : checkingAccounts) {
+				totalBalance = totalBalance + ca.getBalance();
+			}
+			return totalBalance;
 		}
-		return totalBalance;
+		return 0;
 	}
-	
+
 	public int getNumberOfSavingsAccounts() {
-		return savingsAccounts.size();
+		if (savingsAccounts != null) {
+			return savingsAccounts.size();
+		}
+		return 0;
 	}
-	
+
 	public double getSavingsBalance() {
 		double totalBalance = 0;
-		for (BankAccount sa : savingsAccounts) {
-			totalBalance = totalBalance + sa.getBalance();
+		if (savingsAccounts != null) {
+			for (BankAccount sa : savingsAccounts) {
+				totalBalance = totalBalance + sa.getBalance();
+			}
 		}
 		return totalBalance;
 	}
-	
+
 	public int getNumberOfCDAccounts() {
-		return cdAccounts.size();
+		if (cDAccounts != null) {
+			return cDAccounts.size();
+		}
+		return 0;
 	}
-	
+
 	public double getCdbalance() {
 		double totalBalance = 0;
-		for (BankAccount cda : cdAccounts) {
-			totalBalance = totalBalance + cda.getBalance();
+		if (cDAccounts != null) {
+			for (BankAccount cda : cDAccounts) {
+				totalBalance = totalBalance + cda.getBalance();
+			}
 		}
 		return totalBalance;
 	}
-	
+
 	public double getCombinedBalance() {
-		double totalBalance = 0;
-		for (BankAccount ca : checkingAccounts) {
-			totalBalance = totalBalance + ca.getBalance();
-		}
-		for (BankAccount sa : savingsAccounts) {
-			totalBalance = totalBalance + sa.getBalance();
-		}
-		for (BankAccount cda : cdAccounts) {
-			totalBalance = totalBalance + cda.getBalance();
-		}
-		return totalBalance;
+		return getCheckingBalance() + getSavingsBalance() + getCdbalance();
 	}
 
 }

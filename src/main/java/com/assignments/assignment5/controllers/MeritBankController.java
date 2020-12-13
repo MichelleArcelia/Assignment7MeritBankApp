@@ -1,6 +1,7 @@
 package com.assignments.assignment5.controllers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -67,19 +68,20 @@ public class MeritBankController {
 	@ResponseStatus(HttpStatus.OK)
 	@PostMapping(value = "/AccountHolders/{id}/CheckingAccounts")
 	public CheckingAccount postCheckingAccount(@Valid @RequestBody CheckingAccount checkingAccount,
-			@PathVariable int id)
+			@PathVariable Integer id)
 			throws NegativeBalanceException, ExceedsCombinedBalanceLimitException, AccountNotFoundException {
 		AccountHolder ah = getAccountHolderById(id);
 		if (ah.getCombinedBalance() + checkingAccount.getBalance() > 250000) {
 			throw new ExceedsCombinedBalanceLimitException("Balance exceeds limit");
 		}
-		ah.addCheckingAccount(checkingAccount);
+		getId(id).setCheckingAccounts((Arrays.asList(checkingAccount)));
+
 		return checkingAccount;
 	}
 
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(value = "/AccountHolders/{id}/CheckingAccounts")
-	public List<CheckingAccount> getCheckingAccountsById(@PathVariable int id) throws AccountNotFoundException {
+	public List<CheckingAccount> getCheckingAccountsById(@PathVariable Integer id) throws AccountNotFoundException {
 		if (id - 1 > accountHolderRepository.count()) {
 			throw new AccountNotFoundException("Account id not found");
 		}
@@ -95,7 +97,7 @@ public class MeritBankController {
 		if (ah.getCombinedBalance() + savingsAccount.getBalance() > 250000) {
 			throw new ExceedsCombinedBalanceLimitException("Balance exceeds limit");
 		}
-		ah.addSavingsAccount(savingsAccount);
+		getId(id).setSavingsAccounts((Arrays.asList(savingsAccount)));
 		return savingsAccount;
 	}
 
@@ -110,7 +112,7 @@ public class MeritBankController {
 	}
 
 	@PostMapping(value = "/AccountHolders/{id}/CDAccounts")
-	public BankAccount postCDAccoutnt(@Valid @RequestBody CDAccount cdAccount, @PathVariable int id)
+	public BankAccount postCDAccount(@Valid @RequestBody CDAccount cdAccount, @PathVariable int id)
 			throws NegativeBalanceException, ExceedsCombinedBalanceLimitException, InterestRateOutOfBoundsException,
 			TermLessThanOneOrNullException {
 //		if(cdAccount.getBalance()<0){
@@ -122,14 +124,14 @@ public class MeritBankController {
 //		if(cdAccount.getTerm() < 1) {
 //			throw new TermLessThanOneOrNullException("Term must not be null or less than 1");
 //		}
-		getId(id).addCDAccount(cdAccount);
+		getId(id).setcDAccounts(Arrays.asList(cdAccount));
 		return cdAccount;
 	}
 
 	@ResponseStatus(HttpStatus.CREATED)
 	@GetMapping(value = "/AccountHolders/{id}/CDAccounts")
 	public List<CDAccount> getCDAccountsbyId(@PathVariable int id) {
-		return getId(id).getCDAccounts();
+		return getId(id).getcDAccounts();
 	}
 
 	@ResponseStatus(HttpStatus.CREATED)
