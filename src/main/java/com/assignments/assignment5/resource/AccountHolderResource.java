@@ -14,28 +14,28 @@ import com.assignments.assignment5.models.AccountHolder;
 import com.assignments.assignment5.repository.AccountHolderRepository;
 
 @RestController
-@RequestMapping("/AccountHolder")
+@RequestMapping("/test")
 public class AccountHolderResource {
 
 	@Autowired
 	AccountHolderRepository accountHolderRepository;
 	
-    @GetMapping("/AccountHolders")
-    public List<AccountHolder> getAll() {
-        return accountHolderRepository.findAll();
-    }
-    
+//    @GetMapping("/AccountHolders")
+//    public List<AccountHolder> getAll() {
+//        return accountHolderRepository.findAll();
+//    }
+//    
     @PostMapping("/addAccountHolder")
     public AccountHolder addAccountHolder(@RequestBody AccountHolder accountHolder) {
     	accountHolderRepository.save(accountHolder);
     	return accountHolder;
     }
 
-    @GetMapping("/{firstName}")
-    public List<AccountHolder> getUser(@PathVariable("name") final String firstName) {
-        return accountHolderRepository.findByFirstName(firstName);
-
-    }
+//    @GetMapping("/{firstName}")
+//    public List<AccountHolder> getUser(@PathVariable("name") final String firstName) {
+//        return accountHolderRepository.findByFirstName(firstName);
+//
+//    }
 
     @GetMapping("/id/{id}")
     public AccountHolder getId(@PathVariable("id") final Integer id) {

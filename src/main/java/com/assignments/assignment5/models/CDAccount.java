@@ -3,21 +3,35 @@ package com.assignments.assignment5.models;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
-@Entity
+
+@Entity(name = "CDAccount")
 @Table(name = "CDAccount")
-public class CDAccount extends BankAccount{
+public class CDAccount extends BankAccount {
 
 	@DecimalMin(value = "0.0", inclusive = false, message = "interest rate must be greater than zero")
 	@DecimalMax(value = "1.0", inclusive = false, message = "interest rate must be less than one")
 	double interestRate = 0.025;
 	int term;
-	
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	private AccountHolder acountHolder;
+
+	public AccountHolder getAcountHolder() {
+		return acountHolder;
+	}
+
+	public void setAcountHolder(AccountHolder acountHolder) {
+		this.acountHolder = acountHolder;
+	}
+
 	public CDAccount() {
 		super();
-		this.term = 0;
+//		this.term = 0;
 	}
 
 	public double getInterestRate() {

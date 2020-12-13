@@ -4,15 +4,17 @@ import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
 
-@Entity
+@Entity(name = "CheckingAccount")
 @Table(name = "CheckingAccount")
 public class CheckingAccount extends BankAccount {
 	
@@ -28,6 +30,17 @@ public class CheckingAccount extends BankAccount {
 //	public void setId(Integer id) {
 //		this.id = id;
 //	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+    private AccountHolder accountHolder;
+	
+	public AccountHolder getAccountHolder() {
+		return accountHolder;
+	}
+
+	public void setAccountHolder(AccountHolder accountHolder) {
+		this.accountHolder = accountHolder;
+	}
 
 	public Integer getAhid() {
 		return ahid;

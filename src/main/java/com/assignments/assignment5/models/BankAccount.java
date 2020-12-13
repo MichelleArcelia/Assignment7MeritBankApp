@@ -17,12 +17,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-@Entity
+@Entity(name = "BankAccount")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class BankAccount {
+
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ba_id")
+//    @Column(name = "ba_id")
     private Integer id;
 //	static int nextId = 1;
 	
