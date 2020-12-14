@@ -5,6 +5,7 @@ import java.util.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,12 +19,14 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "AccountHolder")
 public class AccountHolder {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ah_id")
+	@Column(name = "accountHolder_id")
 	Integer id;
 	// static int nextId = 1;
 
@@ -41,32 +44,15 @@ public class AccountHolder {
 	String SSN;
 	// int contactID;
 
-	public List<CDAccount> getcDAccounts() {
-		return cDAccounts;
-	}
-
-	public void setcDAccounts(List<CDAccount> cDAccounts) {
-		this.cDAccounts = cDAccounts;
-	}
-
-	// @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "contactID", referencedColumnName = "id")
-//	AccountHoldersContactDetails contactDetails;
-//	
-//	List<CheckingAccount> checkingAccounts = new ArrayList<CheckingAccount>();
-//	List<SavingsAccount> savingsAccounts = new ArrayList<SavingsAccount>();
-//	List<CDAccount> cdAccounts = new ArrayList<CDAccount>();
-//	
-	@OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ah_id", referencedColumnName = "ah_id")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "accountHolder", fetch = FetchType.LAZY)
 	private List<CheckingAccount> checkingAccounts;
 
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "ah_id", referencedColumnName = "ah_id")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "accountHolder", fetch = FetchType.LAZY)
 	private List<SavingsAccount> savingsAccounts;
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "ah_id", referencedColumnName = "ah_id")
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "accountHolder", fetch = FetchType.LAZY)
 	private List<CDAccount> cDAccounts;
+	
 
 	public AccountHolder() {
 //		this.firstName = "";
@@ -74,22 +60,35 @@ public class AccountHolder {
 //		this.lastName = "";
 //		this.SSN = "";
 		// this.id = nextId ++;
+
 	}
 
+	@JsonManagedReference
 	public List<CheckingAccount> getCheckingAccounts() {
 		return checkingAccounts;
 	}
 
 	public void setCheckingAccounts(List<CheckingAccount> checkingAccounts) {
-		this.checkingAccounts = checkingAccounts;
+		this.checkingAccounts = new ArrayList<CheckingAccount>(checkingAccounts);
+		//this.checkingAccounts = checkingAccounts;
 	}
 
+	@JsonManagedReference
 	public List<SavingsAccount> getSavingsAccounts() {
 		return savingsAccounts;
 	}
 
 	public void setSavingsAccounts(List<SavingsAccount> savingsAccounts) {
-		this.savingsAccounts = savingsAccounts;
+		this.savingsAccounts = new ArrayList<SavingsAccount>(savingsAccounts);
+	}
+	
+	@JsonManagedReference
+	public List<CDAccount> getcDAccounts() {
+		return cDAccounts;
+	}
+
+	public void setcDAccounts(List<CDAccount> cDAccounts) {
+		this.cDAccounts = new ArrayList<CDAccount>(cDAccounts);
 	}
 
 	public Integer getId() {
@@ -137,34 +136,6 @@ public class AccountHolder {
 		return this;
 	}
 
-//
-//	public BankAccount addCheckingAccount(CheckingAccount checkingAccount) {
-//		checkingAccounts.add(checkingAccount);
-//		return checkingAccount;
-//	}
-//	
-////	public List<CheckingAccount> getCheckingAccounts() {
-////		return checkingAccounts;		
-////	}
-//	
-//	public BankAccount addSavingsAccount(SavingsAccount savingsAccount){
-//		savingsAccounts.add(savingsAccount);
-//		return savingsAccount;
-//	}
-//	
-////	public List<SavingsAccount> getSavingsAccounts(){
-////		return savingsAccounts;
-////	}
-//	
-//	public BankAccount addCDAccount(CDAccount cdAccount){
-//		cDAccounts.add(cdAccount);
-//		return cdAccount;
-//	}
-//	
-//	public List<CDAccount> getCDAccounts(){
-//		return cDAccounts;
-//	}
-//	
 	public int getNumberOfCheckingAccounts() {
 		if (checkingAccounts != null) {
 			return checkingAccounts.size();

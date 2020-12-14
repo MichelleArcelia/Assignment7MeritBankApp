@@ -23,6 +23,8 @@ import com.assignments.assignment5.models.CDOffering;
 import com.assignments.assignment5.models.CheckingAccount;
 import com.assignments.assignment5.models.SavingsAccount;
 import com.assignments.assignment5.repository.AccountHolderRepository;
+import com.assignments.assignment5.repository.AccountHoldersContactDetailsRepository;
+import com.assignments.assignment5.repository.CDOfferingRepository;
 import com.assignments.assignment5.repository.CheckingAccountRepository;
 
 import Exceptions.AccountNotFoundException;
@@ -34,14 +36,34 @@ import Exceptions.InterestRateOutOfBoundsException;
 @RestController
 public class MeritBankController {
 //	List <AccountHolder> accountHolderRepository = new ArrayList<AccountHolder>();
-	List<CDOffering> cdOfferings = new ArrayList<CDOffering>();
+//	List<CDOffering> cdOfferings = new ArrayList<CDOffering>();
 
 	@Autowired
 	AccountHolderRepository accountHolderRepository;
 	
 	@Autowired
-	CheckingAccountRepository checkingAccountRepository;
+	AccountHoldersContactDetailsRepository accountHoldersContactDetailsRepository;
+	
+	@Autowired
+	CDOfferingRepository cdOfferingRepository;
+	
+	@GetMapping(value = "/ContactDetails")
+	public List<AccountHoldersContactDetails> getAccountHoldersContactDetails(){
+		return accountHoldersContactDetailsRepository.findAll();
+	}
 
+	@ResponseStatus(HttpStatus.OK)
+	@PostMapping(value = "/ContactDetails/{id}")
+	public AccountHoldersContactDetails postContactDetails(@Valid @RequestBody AccountHoldersContactDetails ahContactDetails,@PathVariable Integer id)
+			throws NegativeBalanceException, ExceedsCombinedBalanceLimitException, AccountNotFoundException {
+		AccountHolder ah = getAccountHolderById(id);
+		ahContactDetails.setAccountHolder(ah);
+
+		accountHolderRepository.save(ah);
+		accountHoldersContactDetailsRepository.save(ahContactDetails);
+		return ahContactDetails;
+	}
+	
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping(value = "/AccountHolders")
 	public AccountHolder postAccountHolder(@Valid @RequestBody AccountHolder accountHolder) {
@@ -72,7 +94,7 @@ public class MeritBankController {
 
 	@ResponseStatus(HttpStatus.OK)
 	@PostMapping(value = "/AccountHolders/{id}/CheckingAccounts")
-	public AccountHolder postCheckingAccount(@Valid @RequestBody CheckingAccount checkingAccount,
+	public CheckingAccount postCheckingAccount(@Valid @RequestBody CheckingAccount checkingAccount,
 			@PathVariable Integer id)
 			throws NegativeBalanceException, ExceedsCombinedBalanceLimitException, AccountNotFoundException {
 		AccountHolder ah = getAccountHolderById(id);
@@ -81,27 +103,11 @@ public class MeritBankController {
 		}
 		ah.setCheckingAccounts((Arrays.asList(checkingAccount)));
 		
-		//checkingAccount.setAccountHolder(ah);
+		checkingAccount.setAccountHolder(ah);
 
 		accountHolderRepository.save(ah);
-		checkingAccountRepository.save(checkingAccount);
-		return ah;
-		
-//		AccountHoldersContactDetails accountHoldersContactDetails = new 
-//		AccountHoldersContactDetails();
-//		AccountHolder accountHolder = new AccountHolder();
-//		CheckingAccount ca = new CheckingAccount();
-//		ca.setBalance(1000);
-//		CheckingAccount ca1 = new CheckingAccount();
-//		ca.setBalance(2000);
-//		
-//		accountHolder.setFirstName(firstName)
-//		.setCheckingAccounts(Arrays.asList(ca, ca1));
-//		
-//		accountHoldersContactDetails.setEmail("rocks@kicks.com")
-//		.setPhoneNumber(12345).setAccountHolder(accountHolder);
-//		
-//		accountHoldersContactDetailsRepository.save(accountHoldersContactDetails);
+		//checkingAccountRepository.save(checkingAccount);
+		return checkingAccount;
 	}
 
 	@ResponseStatus(HttpStatus.OK)
@@ -121,11 +127,13 @@ public class MeritBankController {
 	public BankAccount postSavingsAccount(@Valid @RequestBody SavingsAccount savingsAccount, @PathVariable int id)
 			throws NegativeBalanceException, ExceedsCombinedBalanceLimitException, AccountNotFoundException {
 		AccountHolder ah = getAccountHolderById(id);
-
 		if (ah.getCombinedBalance() + savingsAccount.getBalance() > 250000) {
 			throw new ExceedsCombinedBalanceLimitException("Balance exceeds limit");
 		}
-		getId(id).setSavingsAccounts((Arrays.asList(savingsAccount)));
+		ah.setSavingsAccounts((Arrays.asList(savingsAccount)));
+		savingsAccount.setAccountHolder(ah);
+		
+		accountHolderRepository.save(ah);
 		return savingsAccount;
 	}
 
@@ -141,18 +149,15 @@ public class MeritBankController {
 
 	@PostMapping(value = "/AccountHolders/{id}/CDAccounts")
 	public BankAccount postCDAccount(@Valid @RequestBody CDAccount cdAccount, @PathVariable int id)
-			throws NegativeBalanceException, ExceedsCombinedBalanceLimitException, InterestRateOutOfBoundsException,
-			TermLessThanOneOrNullException {
-//		if(cdAccount.getBalance()<0){
-//			throw new NegativeBalanceException("Balance can not be less than 0");
-//		}
-//		if(cdAccount.getInterestRate() <= 0 || cdAccount.getInterestRate() >=1) {
-//			throw new InterestRateOutOfBoundsException("Interest rate must be greater than 0 and less than 1");
-//		}
-//		if(cdAccount.getTerm() < 1) {
-//			throw new TermLessThanOneOrNullException("Term must not be null or less than 1");
-//		}
-		getId(id).setcDAccounts(Arrays.asList(cdAccount));
+			throws AccountNotFoundException, ExceedsCombinedBalanceLimitException {
+		AccountHolder ah = getAccountHolderById(id);
+		if (ah.getCombinedBalance() + cdAccount.getBalance() > 250000) {
+			throw new ExceedsCombinedBalanceLimitException("Balance exceeds limit");
+		}
+		ah.setcDAccounts(Arrays.asList(cdAccount));
+		cdAccount.setAccountHolder(ah);
+		
+		accountHolderRepository.save(ah);
 		return cdAccount;
 	}
 
@@ -165,13 +170,18 @@ public class MeritBankController {
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping(value = "/CDOfferings")
 	public CDOffering postCDOffering(@Valid @RequestBody CDOffering cdOffering) {
-		cdOfferings.add(cdOffering);
+		for(AccountHolder ah : getAccountHolders()) {
+			cdOffering.setcDAccounts(ah.getcDAccounts());
+			accountHolderRepository.save(ah);
+			cdOfferingRepository.save(cdOffering);
+		}
+
 		return cdOffering;
 	}
 
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(value = "/CDOfferings")
 	public List<CDOffering> getCDOfferings() {
-		return cdOfferings;
+		return cdOfferingRepository.findAll();
 	}
 }
