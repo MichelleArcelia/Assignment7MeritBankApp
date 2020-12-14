@@ -24,7 +24,7 @@ public class AccountHoldersContactDetails {
 	Integer phoneNumber;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id", referencedColumnName = "id") 
+	@JoinColumn(name = "ah_id", referencedColumnName = "ah_id") 
 	AccountHolder accountHolder;
 	
 	public AccountHoldersContactDetails() {

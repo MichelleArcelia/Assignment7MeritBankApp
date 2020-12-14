@@ -16,12 +16,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.assignments.assignment5.models.AccountHolder;
+import com.assignments.assignment5.models.AccountHoldersContactDetails;
 import com.assignments.assignment5.models.BankAccount;
 import com.assignments.assignment5.models.CDAccount;
 import com.assignments.assignment5.models.CDOffering;
 import com.assignments.assignment5.models.CheckingAccount;
 import com.assignments.assignment5.models.SavingsAccount;
 import com.assignments.assignment5.repository.AccountHolderRepository;
+import com.assignments.assignment5.repository.CheckingAccountRepository;
 
 import Exceptions.AccountNotFoundException;
 import Exceptions.NegativeBalanceException;
@@ -36,6 +38,9 @@ public class MeritBankController {
 
 	@Autowired
 	AccountHolderRepository accountHolderRepository;
+	
+	@Autowired
+	CheckingAccountRepository checkingAccountRepository;
 
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping(value = "/AccountHolders")
@@ -67,16 +72,36 @@ public class MeritBankController {
 
 	@ResponseStatus(HttpStatus.OK)
 	@PostMapping(value = "/AccountHolders/{id}/CheckingAccounts")
-	public CheckingAccount postCheckingAccount(@Valid @RequestBody CheckingAccount checkingAccount,
+	public AccountHolder postCheckingAccount(@Valid @RequestBody CheckingAccount checkingAccount,
 			@PathVariable Integer id)
 			throws NegativeBalanceException, ExceedsCombinedBalanceLimitException, AccountNotFoundException {
 		AccountHolder ah = getAccountHolderById(id);
 		if (ah.getCombinedBalance() + checkingAccount.getBalance() > 250000) {
 			throw new ExceedsCombinedBalanceLimitException("Balance exceeds limit");
 		}
-		getId(id).setCheckingAccounts((Arrays.asList(checkingAccount)));
+		ah.setCheckingAccounts((Arrays.asList(checkingAccount)));
+		
+		//checkingAccount.setAccountHolder(ah);
 
-		return checkingAccount;
+		accountHolderRepository.save(ah);
+		checkingAccountRepository.save(checkingAccount);
+		return ah;
+		
+//		AccountHoldersContactDetails accountHoldersContactDetails = new 
+//		AccountHoldersContactDetails();
+//		AccountHolder accountHolder = new AccountHolder();
+//		CheckingAccount ca = new CheckingAccount();
+//		ca.setBalance(1000);
+//		CheckingAccount ca1 = new CheckingAccount();
+//		ca.setBalance(2000);
+//		
+//		accountHolder.setFirstName(firstName)
+//		.setCheckingAccounts(Arrays.asList(ca, ca1));
+//		
+//		accountHoldersContactDetails.setEmail("rocks@kicks.com")
+//		.setPhoneNumber(12345).setAccountHolder(accountHolder);
+//		
+//		accountHoldersContactDetailsRepository.save(accountHoldersContactDetails);
 	}
 
 	@ResponseStatus(HttpStatus.OK)
@@ -85,7 +110,10 @@ public class MeritBankController {
 		if (id - 1 > accountHolderRepository.count()) {
 			throw new AccountNotFoundException("Account id not found");
 		}
+		
 		return getId(id).getCheckingAccounts();
+//		return checkingAccountRepository.findAll();
+		
 	}
 
 	@ResponseStatus(HttpStatus.CREATED)

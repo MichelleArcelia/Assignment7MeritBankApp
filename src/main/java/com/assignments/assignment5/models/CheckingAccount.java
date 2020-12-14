@@ -17,12 +17,23 @@ import javax.validation.constraints.Min;
 @Entity(name = "CheckingAccount")
 @Table(name = "CheckingAccount")
 public class CheckingAccount extends BankAccount {
-	
+
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	private AccountHolder accountHolder;
+//
+//	public AccountHolder getAccountHolder() {
+//		return accountHolder;
+//	}
+//
+//	public void setAccountHolder(AccountHolder accountHolder) {
+//		this.accountHolder = accountHolder;
+//	}
+
 //	@Id
 //    @GeneratedValue(strategy = GenerationType.AUTO)
 ////    @Column(name = "ca_id")
 //    private Integer id;
-	//private Integer ahid;
+	// private Integer ahid;
 //	public Integer getId() {
 //		return id;
 //	}
@@ -57,11 +68,10 @@ public class CheckingAccount extends BankAccount {
 	public CheckingAccount() {
 		super();
 	}
-	
+
 	public double getInterestRate() {
 		return interestRate;
 	}
-
 
 	public void setInterestRate(double interestRate) {
 		this.interestRate = interestRate;

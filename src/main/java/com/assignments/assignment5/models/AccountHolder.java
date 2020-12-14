@@ -23,7 +23,7 @@ import javax.validation.constraints.NotNull;
 public class AccountHolder {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	// @Column(name = "ah_id")
+    @Column(name = "ah_id")
 	Integer id;
 	// static int nextId = 1;
 
@@ -57,12 +57,15 @@ public class AccountHolder {
 //	List<SavingsAccount> savingsAccounts = new ArrayList<SavingsAccount>();
 //	List<CDAccount> cdAccounts = new ArrayList<CDAccount>();
 //	
-	@OneToMany(mappedBy = "accountHolder", cascade = CascadeType.ALL, orphanRemoval = true)
-	// @JoinColumn(name = "ah_id", referencedColumnName = "ahid")
+	@OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ah_id", referencedColumnName = "ah_id")
 	private List<CheckingAccount> checkingAccounts;
-	@OneToMany(mappedBy = "accountHolder", cascade = CascadeType.ALL, orphanRemoval = true)
+
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "ah_id", referencedColumnName = "ah_id")
 	private List<SavingsAccount> savingsAccounts;
-	@OneToMany(mappedBy = "accountHolder", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "ah_id", referencedColumnName = "ah_id")
 	private List<CDAccount> cDAccounts;
 
 	public AccountHolder() {

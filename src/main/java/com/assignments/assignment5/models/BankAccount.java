@@ -25,44 +25,53 @@ public abstract class BankAccount {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-//    @Column(name = "ba_id")
-    private Integer id;
+    @Column(name = "ba_id")
+    protected Integer id;
 //	static int nextId = 1;
 	
 	@Min(value = 0, message = "Balance must be atleast zero")
 	double balance;
 	Date openedOn;
 	
+	@Column(name = "ah_id")
+	private Integer ahid;
 //	@DecimalMin(value = "0.0", inclusive = true, message = "interest rate must be greater than zero")
 //	@DecimalMax(value = "1", inclusive = false, message = "interest rate must be less than one")
 //	double interestRate;
 	
 
-	@ManyToOne(fetch = FetchType.LAZY)
-    private AccountHolder accountHolder;
-	
-	public AccountHolder getAccountHolder() {
-		return accountHolder;
-	}
-
-	public void setAccountHolder(AccountHolder accountHolder) {
-		this.accountHolder = accountHolder;
-	}
+//	@ManyToOne(fetch = FetchType.LAZY)
+//    private AccountHolder accountHolder;
+//	
+//	public AccountHolder getAccountHolder() {
+//		return accountHolder;
+//	}
+//
+//	public void setAccountHolder(AccountHolder accountHolder) {
+//		this.accountHolder = accountHolder;
+//	}
 	
 	public BankAccount() {
 //		this.balance = 0;
-//		this.openedOn = new Date(System.currentTimeMillis());
+		this.openedOn = new Date(System.currentTimeMillis());
 //		this.interestRate = 0.1;
 //		this.id = nextId++;
+	}
+
+	public Integer getAhid() {
+		return ahid;
+	}
+
+	public void setAhid(Integer ahid) {
+		this.ahid = ahid;
 	}
 
 	public Integer getId() {
 		return id;
 	}
 
-	public BankAccount setId(Integer id) {
+	public void setId(Integer id) {
 		this.id = id;
-		return this;
 	}
 
 	public double getBalance() {
