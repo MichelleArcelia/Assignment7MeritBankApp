@@ -1,11 +1,10 @@
 package com.assignments.assignment5.controllers;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,171 +16,116 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.assignments.assignment5.models.AccountHolder;
 import com.assignments.assignment5.models.AccountHoldersContactDetails;
-import com.assignments.assignment5.models.BankAccount;
 import com.assignments.assignment5.models.CDAccount;
 import com.assignments.assignment5.models.CDOffering;
 import com.assignments.assignment5.models.CheckingAccount;
 import com.assignments.assignment5.models.SavingsAccount;
-import com.assignments.assignment5.repository.AccountHolderRepository;
-import com.assignments.assignment5.repository.AccountHoldersContactDetailsRepository;
-import com.assignments.assignment5.repository.CDOfferingRepository;
-import com.assignments.assignment5.repository.CheckingAccountRepository;
+import com.assignments.assignment5.services.MeritBankService;
 
 import Exceptions.AccountNotFoundException;
-import Exceptions.NegativeBalanceException;
-import Exceptions.TermLessThanOneOrNullException;
 import Exceptions.ExceedsCombinedBalanceLimitException;
-import Exceptions.InterestRateOutOfBoundsException;
 
 @RestController
 public class MeritBankController {
-//	List <AccountHolder> accountHolderRepository = new ArrayList<AccountHolder>();
-//	List<CDOffering> cdOfferings = new ArrayList<CDOffering>();
+	Logger log = LoggerFactory.getLogger(this.getClass());
+	@Autowired
+	private MeritBankService meritBankService;
+	
+	@ResponseStatus(HttpStatus.CREATED)
+	@PostMapping(value = "/AccountHolders")
+	public AccountHolder addAccountHolder(@Valid @RequestBody AccountHolder accountHolder) {
+		return meritBankService.addAccountHolder(accountHolder);
+	}
+	@ResponseStatus(HttpStatus.OK)
+	@GetMapping(value = "/AccountHolders")
+	public List<AccountHolder> getAccountHolders() {
+		return meritBankService.getAccountHolders();
+	}
+	@ResponseStatus(HttpStatus.OK)
+	@GetMapping(value = "/AccountHolders/{id}")
+	public AccountHolder getAccountHolderById(@PathVariable Integer id) throws AccountNotFoundException {
+		AccountHolder ah; 
+		//debug log - entering 
+		try {
+			//use this only when someone logs in - to have record on log of login 
+			log.info("Entered /AccountHolders/{1} End Point");
+			ah = meritBankService.getAccountHolderById(id);
+		} catch (Exception e) {
+			//error log - there's been an error + exception
+			log.debug("getAccountById Started" + e);
+			throw new AccountNotFoundException("Account id not found");
+		}
+		log.info("Entered /AccountHolders/{1} End Point");
+		//debug log - returning
+		return ah;
+	}
 
-	@Autowired
-	AccountHolderRepository accountHolderRepository;
-	
-	@Autowired
-	AccountHoldersContactDetailsRepository accountHoldersContactDetailsRepository;
-	
-	@Autowired
-	CDOfferingRepository cdOfferingRepository;
-	
 	@GetMapping(value = "/ContactDetails")
 	public List<AccountHoldersContactDetails> getAccountHoldersContactDetails(){
-		return accountHoldersContactDetailsRepository.findAll();
+		return meritBankService.getAccountHoldersContactDetails();
 	}
 
 	@ResponseStatus(HttpStatus.OK)
 	@PostMapping(value = "/ContactDetails/{id}")
-	public AccountHoldersContactDetails postContactDetails(@Valid @RequestBody AccountHoldersContactDetails ahContactDetails,@PathVariable Integer id)
-			throws NegativeBalanceException, ExceedsCombinedBalanceLimitException, AccountNotFoundException {
-		AccountHolder ah = getAccountHolderById(id);
-		ahContactDetails.setAccountHolder(ah);
-
-		accountHolderRepository.save(ah);
-		accountHoldersContactDetailsRepository.save(ahContactDetails);
-		return ahContactDetails;
+	public AccountHoldersContactDetails postContactDetails(@Valid @RequestBody AccountHoldersContactDetails ahContactDetails,
+			@PathVariable Integer id){
+		return meritBankService.postContactDetails(ahContactDetails, id);
 	}
 	
-	@ResponseStatus(HttpStatus.CREATED)
-	@PostMapping(value = "/AccountHolders")
-	public AccountHolder postAccountHolder(@Valid @RequestBody AccountHolder accountHolder) {
-		accountHolderRepository.save(accountHolder);
-		return accountHolder;
-
-	}
-
-	@ResponseStatus(HttpStatus.OK)
-	@GetMapping(value = "/AccountHolders")
-	public List<AccountHolder> getAccountHolders() {
-		return accountHolderRepository.findAll();
-	}
-
-	@ResponseStatus(HttpStatus.OK)
-	@GetMapping(value = "/AccountHolders/{id}")
-	public AccountHolder getAccountHolderById(@PathVariable Integer id) throws AccountNotFoundException {
-		if (id == 0 || id > accountHolderRepository.count()) {
-			throw new AccountNotFoundException("Account id not found");
-		}
-		return getId(id);
-	}
-
-	@GetMapping("/id/{id}")
-	public AccountHolder getId(@PathVariable("id") final Integer id) {
-		return accountHolderRepository.findById(id).orElse(null);
-	}
-
 	@ResponseStatus(HttpStatus.OK)
 	@PostMapping(value = "/AccountHolders/{id}/CheckingAccounts")
-	public CheckingAccount postCheckingAccount(@Valid @RequestBody CheckingAccount checkingAccount,
-			@PathVariable Integer id)
-			throws NegativeBalanceException, ExceedsCombinedBalanceLimitException, AccountNotFoundException {
-		AccountHolder ah = getAccountHolderById(id);
-		if (ah.getCombinedBalance() + checkingAccount.getBalance() > 250000) {
-			throw new ExceedsCombinedBalanceLimitException("Balance exceeds limit");
-		}
-		ah.setCheckingAccounts((Arrays.asList(checkingAccount)));
-		
-		checkingAccount.setAccountHolder(ah);
-
-		accountHolderRepository.save(ah);
-		//checkingAccountRepository.save(checkingAccount);
-		return checkingAccount;
+	public CheckingAccount postCheckingAccount(@Valid @RequestBody CheckingAccount checkingAccount, @PathVariable Integer id) 
+			throws ExceedsCombinedBalanceLimitException {
+		return meritBankService.postCheckingAccount(checkingAccount, id);
 	}
 
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(value = "/AccountHolders/{id}/CheckingAccounts")
 	public List<CheckingAccount> getCheckingAccountsById(@PathVariable Integer id) throws AccountNotFoundException {
-		if (id - 1 > accountHolderRepository.count()) {
-			throw new AccountNotFoundException("Account id not found");
+		try {
+			return meritBankService.getCheckingAccountsById(id);
+		} catch (Exception e) {
+			// TODO: handle exception
+			return null;
 		}
-		
-		return getId(id).getCheckingAccounts();
-//		return checkingAccountRepository.findAll();
-		
 	}
 
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping(value = "/AccountHolders/{id}/SavingsAccounts")
-	public BankAccount postSavingsAccount(@Valid @RequestBody SavingsAccount savingsAccount, @PathVariable int id)
-			throws NegativeBalanceException, ExceedsCombinedBalanceLimitException, AccountNotFoundException {
-		AccountHolder ah = getAccountHolderById(id);
-		if (ah.getCombinedBalance() + savingsAccount.getBalance() > 250000) {
-			throw new ExceedsCombinedBalanceLimitException("Balance exceeds limit");
-		}
-		ah.setSavingsAccounts((Arrays.asList(savingsAccount)));
-		savingsAccount.setAccountHolder(ah);
-		
-		accountHolderRepository.save(ah);
-		return savingsAccount;
+	public SavingsAccount postSavingsAccount(@Valid @RequestBody SavingsAccount savingsAccount, @PathVariable int id) 
+			throws ExceedsCombinedBalanceLimitException{
+		return meritBankService.postSavingsAccount(savingsAccount, id);
 	}
 
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(value = "/AccountHolders/{id}/SavingsAccounts")
 	public List<SavingsAccount> getSavingsAccountsById(@PathVariable int id) throws AccountNotFoundException {
-		if (id - 1 > accountHolderRepository.count()) {
-			throw new AccountNotFoundException("Account id not found");
-		}
-		return getId(id).getSavingsAccounts();
-
+		return meritBankService.getSavingsAccountsById(id);
 	}
 
 	@PostMapping(value = "/AccountHolders/{id}/CDAccounts")
-	public BankAccount postCDAccount(@Valid @RequestBody CDAccount cdAccount, @PathVariable int id)
+	public CDAccount postCDAccount(@Valid @RequestBody CDAccount cdAccount, @PathVariable int id) 
 			throws AccountNotFoundException, ExceedsCombinedBalanceLimitException {
-		AccountHolder ah = getAccountHolderById(id);
-		if (ah.getCombinedBalance() + cdAccount.getBalance() > 250000) {
-			throw new ExceedsCombinedBalanceLimitException("Balance exceeds limit");
-		}
-		ah.setcDAccounts(Arrays.asList(cdAccount));
-		cdAccount.setAccountHolder(ah);
-		
-		accountHolderRepository.save(ah);
-		return cdAccount;
+		return meritBankService.postCDAccount(cdAccount, id);
 	}
 
 	@ResponseStatus(HttpStatus.CREATED)
 	@GetMapping(value = "/AccountHolders/{id}/CDAccounts")
 	public List<CDAccount> getCDAccountsbyId(@PathVariable int id) {
-		return getId(id).getcDAccounts();
+		return meritBankService.getCDAccountsbyId(id);
 	}
 
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping(value = "/CDOfferings")
 	public CDOffering postCDOffering(@Valid @RequestBody CDOffering cdOffering) {
-		for(AccountHolder ah : getAccountHolders()) {
-			cdOffering.setcDAccounts(ah.getcDAccounts());
-			accountHolderRepository.save(ah);
-			cdOfferingRepository.save(cdOffering);
-		}
-
-		return cdOffering;
+		return meritBankService.postCDOffering(cdOffering);
 	}
 
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(value = "/CDOfferings")
 	public List<CDOffering> getCDOfferings() {
-		return cdOfferingRepository.findAll();
+		return meritBankService.getCDOfferings();
 	}
+	
+	
 }

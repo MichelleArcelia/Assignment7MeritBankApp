@@ -27,7 +27,7 @@ public class CDOffering {
 	Integer id;
 	
 	@Min(value = 1, message = "Term must be atleast one")
-	int term;
+	Integer term;
 	
 	@DecimalMin(value = "0.0", inclusive = false, message = "interest rate must be greater than zero")
 	@DecimalMax(value = "1.0", inclusive = false, message = "interest rate must be less than one")
@@ -37,8 +37,6 @@ public class CDOffering {
 	private List<CDAccount> cDAccounts;
 	
 	public CDOffering() {
-		this.term = 0; 
-		this.interestRate = 0.1;
 	}
 
 	public Integer getId() {
@@ -58,11 +56,11 @@ public class CDOffering {
 		this.cDAccounts = new ArrayList<CDAccount>(cDAccounts);
 	}
 
-	public int getTerm() {
+	public Integer getTerm() {
 		return term;
 	}
 
-	public void setTerm(int term) {
+	public void setTerm(Integer term) {
 		this.term = term;
 	}
 
@@ -73,4 +71,5 @@ public class CDOffering {
 	public void setInterestRate(double interestRate) {
 		this.interestRate = interestRate;
 	}
+
 }

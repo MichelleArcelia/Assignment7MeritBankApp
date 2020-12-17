@@ -28,21 +28,20 @@ public class AccountHolder {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "accountHolder_id")
 	Integer id;
-	// static int nextId = 1;
 
-//	@NotNull(message = "First Name can not be null")
-//	@NotBlank(message = "First Name can not be blank")
-	// @Column(name = "firstName")
+	@NotNull(message = "First Name can not be null")
+	@NotBlank(message = "First Name can not be blank")
 	String firstName;
 
 	String middleName;
-//	@NotNull(message = "Last Name can not be null")
-//	@NotBlank(message = "Last Name can not be blank")
+	
+	@NotNull(message = "Last Name can not be null")
+	@NotBlank(message = "Last Name can not be blank")
 	String lastName;
-//	@NotNull(message = "SSN can not be null")
-//	@NotBlank(message = "SSN can not be blank")
+	
+	@NotNull(message = "SSN can not be null")
+	@NotBlank(message = "SSN can not be blank")
 	String SSN;
-	// int contactID;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "accountHolder", fetch = FetchType.LAZY)
 	private List<CheckingAccount> checkingAccounts;
@@ -53,96 +52,71 @@ public class AccountHolder {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "accountHolder", fetch = FetchType.LAZY)
 	private List<CDAccount> cDAccounts;
 	
-
 	public AccountHolder() {
-//		this.firstName = "";
-//		this.middleName = "";
-//		this.lastName = "";
-//		this.SSN = "";
-		// this.id = nextId ++;
-
 	}
 
 	@JsonManagedReference
 	public List<CheckingAccount> getCheckingAccounts() {
 		return checkingAccounts;
 	}
-
 	public void setCheckingAccounts(List<CheckingAccount> checkingAccounts) {
 		this.checkingAccounts = new ArrayList<CheckingAccount>(checkingAccounts);
-		//this.checkingAccounts = checkingAccounts;
 	}
-
 	@JsonManagedReference
 	public List<SavingsAccount> getSavingsAccounts() {
 		return savingsAccounts;
 	}
-
 	public void setSavingsAccounts(List<SavingsAccount> savingsAccounts) {
 		this.savingsAccounts = new ArrayList<SavingsAccount>(savingsAccounts);
 	}
-	
 	@JsonManagedReference
 	public List<CDAccount> getcDAccounts() {
 		return cDAccounts;
 	}
-
 	public void setcDAccounts(List<CDAccount> cDAccounts) {
 		this.cDAccounts = new ArrayList<CDAccount>(cDAccounts);
 	}
-
 	public Integer getId() {
 		return id;
 	}
-
 	public AccountHolder setId(Integer id) {
 		this.id = id;
 		return this;
 	}
-
 	public String getFirstName() {
 		return firstName;
 	}
-
 	public AccountHolder setFirstName(String firstName) {
 		this.firstName = firstName;
 		return this;
 	}
-
 	public String getMiddleName() {
 		return middleName;
 	}
-
 	public AccountHolder setMiddleName(String middleName) {
 		this.middleName = middleName;
 		return this;
 	}
-
 	public String getLastName() {
 		return lastName;
 	}
-
 	public AccountHolder setLastName(String lastName) {
 		this.lastName = lastName;
 		return this;
 	}
-
 	public String getSSN() {
 		return SSN;
 	}
-
 	public AccountHolder setSSN(String sSN) {
 		SSN = sSN;
 		return this;
 	}
-
 	public int getNumberOfCheckingAccounts() {
 		if (checkingAccounts != null) {
 			return checkingAccounts.size();
 		}
 		return 0;
 	}
-
 	public double getCheckingBalance() {
 		double totalBalance = 0;
 		if (checkingAccounts != null) {
@@ -153,14 +127,12 @@ public class AccountHolder {
 		}
 		return 0;
 	}
-
 	public int getNumberOfSavingsAccounts() {
 		if (savingsAccounts != null) {
 			return savingsAccounts.size();
 		}
 		return 0;
 	}
-
 	public double getSavingsBalance() {
 		double totalBalance = 0;
 		if (savingsAccounts != null) {
@@ -170,14 +142,12 @@ public class AccountHolder {
 		}
 		return totalBalance;
 	}
-
 	public int getNumberOfCDAccounts() {
 		if (cDAccounts != null) {
 			return cDAccounts.size();
 		}
 		return 0;
 	}
-
 	public double getCdbalance() {
 		double totalBalance = 0;
 		if (cDAccounts != null) {
@@ -187,9 +157,7 @@ public class AccountHolder {
 		}
 		return totalBalance;
 	}
-
 	public double getCombinedBalance() {
 		return getCheckingBalance() + getSavingsBalance() + getCdbalance();
 	}
-
 }

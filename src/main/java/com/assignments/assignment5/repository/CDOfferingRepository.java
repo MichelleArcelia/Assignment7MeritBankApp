@@ -6,4 +6,5 @@ import com.assignments.assignment5.models.CDOffering;
 
 public interface CDOfferingRepository extends JpaRepository<CDOffering, Integer> {
 
+	CDOffering findByTerm(Integer term);
 }

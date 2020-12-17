@@ -4,6 +4,9 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -16,10 +19,9 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Table(name = "CDAccount")
 public class CDAccount extends BankAccount {
 
-	@DecimalMin(value = "0.0", inclusive = false, message = "interest rate must be greater than zero")
-	@DecimalMax(value = "1.0", inclusive = false, message = "interest rate must be less than one")
-	double interestRate = 0.025;
-	int term;
+	@Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
 	
 	@ManyToOne
 	@JoinColumn(name = "offering_id") 
@@ -27,7 +29,14 @@ public class CDAccount extends BankAccount {
 	 
 	public CDAccount() {
 		super();
-		this.cDOffering = getOfferingFromCDAccount();
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	@JsonBackReference(value="cdAccount")
@@ -38,28 +47,4 @@ public class CDAccount extends BankAccount {
 	public void setcDOffering(CDOffering cDOffering) {
 		this.cDOffering = cDOffering;
 	}
-
-	public double getInterestRate() {
-		return interestRate;
-	}
-
-	public void setInterestRate(double interestRate) {
-		this.interestRate = interestRate;
-	}
-
-	public int getTerm() {
-		return term;
-	}
-
-	public void setTerm(int term) {
-		this.term = term;
-	}
-	
-	public CDOffering getOfferingFromCDAccount() {
-		CDOffering cdo = new CDOffering();
-		cdo.setInterestRate(this.interestRate);
-		cdo.setTerm(this.term);
-		return cdo;
-	}
-
 }

@@ -35,26 +35,15 @@ public abstract class BankAccount {
 	@JoinColumn(name = "accountHolder_id") 
 	private AccountHolder accountHolder;
 	 
-	@JsonBackReference
-	public AccountHolder getAccountHolder() {
-		return accountHolder;
-	}
-
-	public void setAccountHolder(AccountHolder accountHolder) {
-		this.accountHolder = accountHolder;
-	}
 
 
 	@Min(value = 0, message = "Balance must be atleast zero")
 	double balance;
+	
 	Date openedOn;
 	
-	
 	public BankAccount() {
-//		this.balance = 0;
 		this.openedOn = new Date(System.currentTimeMillis());
-//		this.interestRate = 0.1;
-//		this.id = nextId++;
 	}
 
 	public Integer getId() {
@@ -64,29 +53,24 @@ public abstract class BankAccount {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
+	
+	@JsonBackReference
+	public AccountHolder getAccountHolder() {
+		return accountHolder;
+	}
+	public void setAccountHolder(AccountHolder accountHolder) {
+		this.accountHolder = accountHolder;
+	}
 	public double getBalance() {
 		return balance;
 	}
-
 	public void setBalance(double balance) {
 		this.balance = balance;
 	}
-
 	public Date getOpenedOn() {
 		return openedOn;
 	}
-
 	public void setOpenedOn(Date openedOn) {
 		this.openedOn = openedOn;
 	}
-
-//	public double getInterestRate() {
-//		return interestRate;
-//	}
-//
-//	public void setInterestRate(double interestRate) {
-//		this.interestRate = interestRate;
-//	}
-	
 }
