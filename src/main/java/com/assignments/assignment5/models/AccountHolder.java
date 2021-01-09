@@ -21,6 +21,8 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+
+
 @Entity
 @Table(name = "AccountHolder")
 public class AccountHolder {
