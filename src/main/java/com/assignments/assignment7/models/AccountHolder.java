@@ -37,11 +37,11 @@ public class AccountHolder {
 	String firstName;
 
 	String middleName;
-	
+
 	@NotNull(message = "Last Name can not be null")
 	@NotBlank(message = "Last Name can not be blank")
 	String lastName;
-	
+
 	@NotNull(message = "SSN can not be null")
 	@NotBlank(message = "SSN can not be blank")
 	String SSN;
@@ -51,10 +51,10 @@ public class AccountHolder {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "accountHolder", fetch = FetchType.LAZY)
 	private List<SavingsAccount> savingsAccounts;
-	
+
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "accountHolder", fetch = FetchType.LAZY)
 	private List<CDAccount> cDAccounts;
-	
+
 	public AccountHolder() {
 	}
 
