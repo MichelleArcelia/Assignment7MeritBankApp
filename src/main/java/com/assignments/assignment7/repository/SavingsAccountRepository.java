@@ -1,8 +1,8 @@
-package com.assignments.assignment5.repository;
+package com.assignments.assignment7.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.assignments.assignment5.models.SavingsAccount;
+import com.assignments.assignment7.models.SavingsAccount;
 
 public interface SavingsAccountRepository extends JpaRepository<SavingsAccount, Integer> {
 

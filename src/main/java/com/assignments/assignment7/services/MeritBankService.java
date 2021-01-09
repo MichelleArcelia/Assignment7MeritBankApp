@@ -1,4 +1,4 @@
-package com.assignments.assignment5.services;
+package com.assignments.assignment7.services;
 
 import java.util.Arrays;
 import java.util.List;
@@ -10,18 +10,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.assignments.assignment5.models.AccountHolder;
-import com.assignments.assignment5.models.AccountHoldersContactDetails;
-import com.assignments.assignment5.models.CDAccount;
-import com.assignments.assignment5.models.CDOffering;
-import com.assignments.assignment5.models.CheckingAccount;
-import com.assignments.assignment5.models.SavingsAccount;
-import com.assignments.assignment5.repository.AccountHolderRepository;
-import com.assignments.assignment5.repository.AccountHoldersContactDetailsRepository;
-import com.assignments.assignment5.repository.CDAccountRepository;
-import com.assignments.assignment5.repository.CDOfferingRepository;
-import com.assignments.assignment5.repository.CheckingAccountRepository;
-import com.assignments.assignment5.repository.SavingsAccountRepository;
+import com.assignments.assignment7.models.AccountHolder;
+import com.assignments.assignment7.models.AccountHoldersContactDetails;
+import com.assignments.assignment7.models.CDAccount;
+import com.assignments.assignment7.models.CDOffering;
+import com.assignments.assignment7.models.CheckingAccount;
+import com.assignments.assignment7.models.SavingsAccount;
+import com.assignments.assignment7.repository.AccountHolderRepository;
+import com.assignments.assignment7.repository.AccountHoldersContactDetailsRepository;
+import com.assignments.assignment7.repository.CDAccountRepository;
+import com.assignments.assignment7.repository.CDOfferingRepository;
+import com.assignments.assignment7.repository.CheckingAccountRepository;
+import com.assignments.assignment7.repository.SavingsAccountRepository;
 
 import Exceptions.AccountNotFoundException;
 import Exceptions.ExceedsCombinedBalanceLimitException;

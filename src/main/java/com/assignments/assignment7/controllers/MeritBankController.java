@@ -1,4 +1,4 @@
-package com.assignments.assignment5.controllers;
+package com.assignments.assignment7.controllers;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.assignments.assignment5.models.AccountHolder;
-import com.assignments.assignment5.models.AccountHoldersContactDetails;
-import com.assignments.assignment5.models.CDAccount;
-import com.assignments.assignment5.models.CDOffering;
-import com.assignments.assignment5.models.CheckingAccount;
-import com.assignments.assignment5.models.SavingsAccount;
-import com.assignments.assignment5.services.MeritBankService;
+import com.assignments.assignment7.models.AccountHolder;
+import com.assignments.assignment7.models.AccountHoldersContactDetails;
+import com.assignments.assignment7.models.CDAccount;
+import com.assignments.assignment7.models.CDOffering;
+import com.assignments.assignment7.models.CheckingAccount;
+import com.assignments.assignment7.models.SavingsAccount;
+import com.assignments.assignment7.services.MeritBankService;
 
 import Exceptions.AccountNotFoundException;
 import Exceptions.ExceedsCombinedBalanceLimitException;
